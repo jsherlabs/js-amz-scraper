@@ -4,7 +4,7 @@ Reusable Amazon web scrapers that extract product data from any Amazon URL. Work
 
 ## Features
 
-- ✅ **Universal** - Works with any Amazon URL (stores, search, categories, etc.)
+- ✅ **Universal** - Works with Amazon store pages, search results, and category pages
 - ✅ **Dual Language** - JavaScript and Python versions with identical functionality
 - ✅ **Headless** - Runs in background without visible browser
 - ✅ **Smart Extraction** - Automatically finds products using multiple strategies
@@ -12,6 +12,7 @@ Reusable Amazon web scrapers that extract product data from any Amazon URL. Work
 - ✅ **CSV Export** - Clean, structured data output
 - ✅ **Configurable** - Custom output filenames
 - ✅ **Multi-Domain** - Works with .com, .co.uk, .de, and other Amazon domains
+- ✅ **Reliable** - Optimized for page types that work consistently without bot detection
 
 ## Installation
 
@@ -50,6 +51,16 @@ python amazon_scraper_generic.py "https://www.amazon.co.uk/s?k=supplements"
 # Custom output filename
 python amazon_scraper_generic.py "https://www.amazon.co.uk/s?k=supplements" my_products.csv
 ```
+
+## What Works Best
+
+This scraper is optimized for Amazon store pages, which work most reliably:
+
+✅ **Store Pages** - Brand stores and seller storefronts (highly reliable)
+
+⚠️ **Limited Support:** Search results, category pages, and individual product pages may trigger Amazon's bot detection. Results vary depending on your IP address, request frequency, and Amazon's current security settings.
+
+**For Production Use:** If you need reliable access to Amazon product data, we recommend using Amazon's official Product Advertising API.
 
 ## Usage Examples
 
