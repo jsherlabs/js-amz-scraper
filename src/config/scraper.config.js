@@ -98,5 +98,55 @@ module.exports = {
     filename: process.env.LOG_FILENAME || 'scraper.log',
     maxSize: process.env.LOG_MAX_SIZE || '10m',
     maxFiles: parseInt(process.env.LOG_MAX_FILES || '5')
+  },
+
+  // Pagination Configuration
+  pagination: {
+    enabled: process.env.ENABLE_PAGINATION === 'true',
+    maxPages: parseInt(process.env.MAX_PAGES || '5'),
+    waitAfterClick: parseInt(process.env.PAGINATION_WAIT || '3000'), // 3 seconds
+    nextButtonSelectors: [
+      'a.s-pagination-next',
+      '.s-pagination-next',
+      'li.a-last a',
+      'a[aria-label="Next"]',
+      'a[title="Next"]',
+      'a[aria-label="Go to next page"]'
+    ],
+    stopOnEmpty: process.env.PAGINATION_STOP_ON_EMPTY !== 'false',
+    deduplicateAcrossPages: process.env.PAGINATION_DEDUPE !== 'false'
+  },
+
+  // Rate Limiting Configuration
+  rateLimit: {
+    enabled: process.env.ENABLE_RATE_LIMIT === 'true',
+    minDelay: parseInt(process.env.RATE_LIMIT_MIN_DELAY || '1000'), // 1 second between requests
+    maxDelay: parseInt(process.env.RATE_LIMIT_MAX_DELAY || '5000'), // 5 seconds max delay
+    randomize: process.env.RATE_LIMIT_RANDOMIZE !== 'false', // Add randomness to delays
+    requestsPerMinute: parseInt(process.env.REQUESTS_PER_MINUTE || '10')
+  },
+
+  // Concurrent Processing Configuration
+  concurrency: {
+    maxWorkers: parseInt(process.env.MAX_WORKERS || '3'),
+    workerTimeout: parseInt(process.env.WORKER_TIMEOUT || '300000'), // 5 minutes per URL
+    continueOnError: process.env.CONTINUE_ON_ERROR !== 'false',
+    shareContext: process.env.SHARE_BROWSER_CONTEXT === 'true' // Share browser context across workers
+  },
+
+  // Export Format Configuration
+  export: {
+    formats: (process.env.EXPORT_FORMATS || 'csv').split(',').map((f) => f.trim()),
+    jsonPretty: process.env.JSON_PRETTY === 'true',
+    includeMetadata: process.env.INCLUDE_METADATA === 'true',
+    excelSheetName: process.env.EXCEL_SHEET_NAME || 'Products'
+  },
+
+  // Resume Configuration
+  resume: {
+    enabled: process.env.ENABLE_RESUME === 'true',
+    stateFile: process.env.RESUME_STATE_FILE || '.scraper_state.json',
+    saveInterval: parseInt(process.env.RESUME_SAVE_INTERVAL || '10'), // Save state every N products
+    autoRecover: process.env.AUTO_RECOVER !== 'false'
   }
 };
