@@ -7,6 +7,9 @@
     "scrape": "node src/scrapers/amazon_scraper_generic.js",
     "scrape:v2": "node src/scrapers/amazon_scraper_v2.js",
     "scrape:v3": "node src/scrapers/amazon_scraper_v3.js",
+    "scraper": "node src/cli/scraper-cli.js",
+    "product": "node src/scrapers/amazon_product_detail.js",
+    "reviews": "node src/scrapers/amazon_reviews.js",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "test:unit": "jest test/unit --coverage",
@@ -36,6 +39,8 @@
     "dotenv": "^16.4.0",
     "objects-to-csv": "^1.3.6",
     "playwright": "^1.40.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
     "winston": "^3.11.0"
   },
   "optionalDependencies": {
