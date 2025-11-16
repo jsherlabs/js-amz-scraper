@@ -150,18 +150,18 @@ async function exportData(
 
   try {
     switch (format.toLowerCase()) {
-    case 'json':
-      await exportToJson(data, outputFilename, options);
-      break;
-    case 'csv':
-      await exportToCsv(data, outputFilename);
-      break;
-    case 'xlsx':
-    case 'excel':
-      await exportToExcel(data, outputFilename, options);
-      break;
-    default:
-      throw new Error(`Unsupported export format: ${format}`);
+      case 'json':
+        await exportToJson(data, outputFilename, options);
+        break;
+      case 'csv':
+        await exportToCsv(data, outputFilename);
+        break;
+      case 'xlsx':
+      case 'excel':
+        await exportToExcel(data, outputFilename, options);
+        break;
+      default:
+        throw new Error(`Unsupported export format: ${format}`);
     }
 
     logger.info(`Data exported successfully to ${outputFilename}`);
