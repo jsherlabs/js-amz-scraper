@@ -36,6 +36,13 @@ Thumbs.db
 playwright-report/
 test-results/
 
+# Test coverage
+coverage/
+htmlcov/
+.coverage
+*.cover
+.pytest_cache/
+
 # Environment variables
 .env
 .env.local

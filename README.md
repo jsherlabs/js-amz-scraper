@@ -1,5 +1,8 @@
 # JS AMZ Scraper
 
+[![CI/CD Pipeline](https://github.com/jslabxyz/js-amz-scraper/actions/workflows/ci.yml/badge.svg)](https://github.com/jslabxyz/js-amz-scraper/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Reusable Amazon web scrapers that extract product data from any Amazon URL. Works with stores, search results, category pages, and more. Available in both JavaScript (Node.js) and Python.
 
 ## Features
@@ -13,20 +16,51 @@ Reusable Amazon web scrapers that extract product data from any Amazon URL. Work
 - ✅ **Configurable** - Custom output filenames
 - ✅ **Multi-Domain** - Works with .com, .co.uk, .de, and other Amazon domains
 - ✅ **Reliable** - Optimized for page types that work consistently without bot detection
+- ✅ **Well-Tested** - Comprehensive test suite with >70% coverage
+- ✅ **Code Quality** - ESLint, Prettier, Black, and Pylint configured
+- ✅ **CI/CD** - Automated testing on every push
+
+## Project Structure
+
+```
+js-amz-scraper/
+├── src/
+│   ├── scrapers/          # Main scraper implementations
+│   ├── utils/             # Utility functions
+│   └── config/            # Configuration files
+├── test/
+│   ├── unit/              # Unit tests
+│   ├── integration/       # Integration tests
+│   └── fixtures/          # Test fixtures
+├── docs/                  # Documentation
+├── scripts/               # Utility scripts
+├── .github/workflows/     # CI/CD workflows
+└── coverage/              # Test coverage reports
+```
 
 ## Installation
 
 ### JavaScript Version
 
 ```bash
+# Clone the repository
+git clone https://github.com/jslabxyz/js-amz-scraper.git
+cd js-amz-scraper
+
+# Install dependencies
 npm install
+
+# Install Playwright browsers
 npx playwright install
 ```
 
 ### Python Version
 
 ```bash
-pip install playwright
+# Install Python dependencies
+pip install -r requirements-dev.txt
+
+# Install Playwright browsers
 playwright install
 ```
 
@@ -36,20 +70,104 @@ playwright install
 
 ```bash
 # Basic usage
-node amazon_scraper_generic.js "https://www.amazon.co.uk/s?k=supplements"
+node src/scrapers/amazon_scraper_generic.js "https://www.amazon.co.uk/s?k=supplements"
 
 # Custom output filename
-node amazon_scraper_generic.js "https://www.amazon.co.uk/s?k=supplements" my_products.csv
+node src/scrapers/amazon_scraper_generic.js "https://www.amazon.co.uk/s?k=supplements" my_products.csv
+
+# Using npm script
+npm run scrape "https://www.amazon.co.uk/s?k=supplements"
 ```
 
 ### Python
 
 ```bash
 # Basic usage
-python amazon_scraper_generic.py "https://www.amazon.co.uk/s?k=supplements"
+python src/scrapers/amazon_scraper_generic.py "https://www.amazon.co.uk/s?k=supplements"
 
 # Custom output filename
-python amazon_scraper_generic.py "https://www.amazon.co.uk/s?k=supplements" my_products.csv
+python src/scrapers/amazon_scraper_generic.py "https://www.amazon.co.uk/s?k=supplements" my_products.csv
+```
+
+## Development
+
+### Running Tests
+
+#### JavaScript Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test -- --coverage
+```
+
+#### Python Tests
+
+```bash
+# Run all Python tests
+npm run test:python
+
+# Or use pytest directly
+pytest test/ -v --cov=src/scrapers
+```
+
+### Code Quality
+
+#### JavaScript Linting & Formatting
+
+```bash
+# Check code formatting
+npm run format:check
+
+# Fix formatting issues
+npm run format
+
+# Run ESLint
+npm run lint
+
+# Fix ESLint issues
+npm run lint:fix
+
+# Run all quality checks
+npm run quality
+```
+
+#### Python Linting & Formatting
+
+```bash
+# Format Python code with Black
+npm run format:python
+
+# Run Pylint
+npm run lint:python
+
+# Or use directly
+black src/scrapers test/
+pylint src/scrapers/*.py
+```
+
+### Pre-commit Hooks
+
+This project uses Husky for pre-commit hooks that automatically:
+- Check code formatting (Prettier)
+- Run ESLint
+- Run tests
+
+To install hooks after cloning:
+
+```bash
+npm install
+```
+
+Hooks will run automatically before each commit. To bypass (not recommended):
+
+```bash
+git commit --no-verify
 ```
 
 ## What Works Best
@@ -67,19 +185,19 @@ This scraper is optimized for Amazon store pages, which work most reliably:
 ### Scrape an Amazon Store Page
 
 ```bash
-node amazon_scraper_generic.js "https://www.amazon.co.uk/stores/page/873F77EE-8A2D-4754-88EC-EF390E82BDD8" store_products.csv
+node src/scrapers/amazon_scraper_generic.js "https://www.amazon.co.uk/stores/page/873F77EE-8A2D-4754-88EC-EF390E82BDD8" store_products.csv
 ```
 
 ### Scrape Search Results
 
 ```bash
-python amazon_scraper_generic.py "https://www.amazon.com/s?k=laptop" laptops.csv
+python src/scrapers/amazon_scraper_generic.py "https://www.amazon.com/s?k=laptop" laptops.csv
 ```
 
 ### Scrape Category/Best Sellers
 
 ```bash
-node amazon_scraper_generic.js "https://www.amazon.co.uk/Best-Sellers-Electronics/zgbs/electronics" bestsellers.csv
+node src/scrapers/amazon_scraper_generic.js "https://www.amazon.co.uk/Best-Sellers-Electronics/zgbs/electronics" bestsellers.csv
 ```
 
 ## Output Format
@@ -109,14 +227,14 @@ Both scrapers can be imported and used as modules in your own code.
 ### JavaScript
 
 ```javascript
-const { scrapeAmazon } = require('./amazon_scraper_generic.js');
+const { scrapeAmazon } = require('./src/scrapers/amazon_scraper_generic.js');
 
 async function main() {
   const products = await scrapeAmazon(
     'https://www.amazon.co.uk/s?k=supplements',
     'output.csv'
   );
-  
+
   console.log(`Scraped ${products.length} products`);
   products.forEach(product => {
     console.log(`${product.title} - ${product.price}`);
@@ -129,6 +247,8 @@ main();
 ### Python
 
 ```python
+import sys
+sys.path.append('src/scrapers')
 from amazon_scraper_generic import scrape_amazon
 
 products = scrape_amazon(
@@ -160,6 +280,10 @@ for product in products:
 - **Playwright** - Browser automation framework
 - **Chromium** - Headless browser engine
 - **objects-to-csv** (JS) / csv module (Python) - CSV generation
+- **Jest** - JavaScript testing framework
+- **pytest** - Python testing framework
+- **ESLint & Prettier** - JavaScript code quality
+- **Black & Pylint** - Python code quality
 
 ### Browser Configuration
 
@@ -174,6 +298,40 @@ The scrapers use client-side JavaScript evaluation to extract data directly from
 - Works with dynamically loaded content
 - Handles various Amazon page layouts
 - Extracts data efficiently in a single pass
+
+## Testing
+
+This project maintains high test coverage with comprehensive unit and integration tests.
+
+### Test Coverage Goals
+
+- Unit tests: >70% coverage
+- All critical paths tested
+- Mock Playwright for fast test execution
+- Integration tests with sample HTML fixtures
+
+### Viewing Coverage Reports
+
+After running tests, view coverage reports:
+
+```bash
+# JavaScript coverage (HTML)
+open coverage/index.html
+
+# Python coverage (HTML)
+open htmlcov/index.html
+```
+
+## CI/CD
+
+This project uses GitHub Actions for continuous integration:
+
+- **JavaScript Tests** - Runs on Node.js 16, 18, 20
+- **Python Tests** - Runs on Python 3.9, 3.10, 3.11, 3.12
+- **Code Quality** - Linting and formatting checks
+- **Coverage Reports** - Uploaded to Codecov
+
+View build status and coverage on the [Actions](https://github.com/jslabxyz/js-amz-scraper/actions) page.
 
 ## Troubleshooting
 
@@ -198,6 +356,14 @@ Amazon may block requests if too many are made quickly:
 - Use different user agents
 - Consider using proxies for large-scale scraping
 
+### Test Failures
+
+If tests fail:
+- Ensure all dependencies are installed: `npm install`
+- Install Playwright browsers: `npx playwright install`
+- Check Node.js version: Requires >=14.0.0
+- Check Python version: Requires >=3.8
+
 ## Best Practices
 
 - ✅ Respect Amazon's Terms of Service
@@ -205,19 +371,47 @@ Amazon may block requests if too many are made quickly:
 - ✅ Use for personal/educational purposes
 - ✅ Don't overload Amazon's servers
 - ✅ Check robots.txt before large-scale scraping
+- ✅ Run tests before committing: `npm test`
+- ✅ Follow code style guidelines: `npm run quality`
+
+## Contributing
+
+Contributions are welcome! Please follow these guidelines:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/my-feature`
+3. Write tests for new functionality
+4. Ensure all tests pass: `npm test && npm run test:python`
+5. Run code quality checks: `npm run quality`
+6. Commit your changes with clear messages
+7. Push to your fork and submit a Pull Request
 
 ## License
 
 MIT License - See LICENSE file for details
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
 ## Support
 
-If you encounter any issues or have questions, please open an issue on GitHub.
+If you encounter any issues or have questions:
+- Open an issue on [GitHub Issues](https://github.com/jslabxyz/js-amz-scraper/issues)
+- Check existing issues for solutions
+- Provide detailed error messages and reproduction steps
 
 ## Disclaimer
 
 This tool is for educational purposes only. Users are responsible for complying with Amazon's Terms of Service and applicable laws. The authors are not responsible for any misuse of this software.
+
+## Roadmap
+
+Future improvements planned:
+- [ ] Pagination support for multi-page scraping
+- [ ] Concurrent URL processing
+- [ ] Retry logic with exponential backoff
+- [ ] Configuration file support
+- [ ] Additional export formats (JSON, Excel)
+- [ ] TypeScript migration
+- [ ] Docker containerization
+- [ ] Rate limiting controls
+- [ ] Proxy support
+
+See [Phase 2-5 improvement plan](docs/IMPROVEMENTS.md) for details.

@@ -1,0 +1,32 @@
+[MASTER]
+init-hook='import sys; sys.path.append("src/scrapers")'
+ignore=CVS,.git,__pycache__,node_modules,venv,.venv
+jobs=0
+
+[MESSAGES CONTROL]
+disable=
+    C0111,  # missing-docstring
+    C0103,  # invalid-name
+    R0903,  # too-few-public-methods
+    R0913,  # too-many-arguments
+    W0703,  # broad-except (we use this for error handling in scraper)
+    C0301,  # line-too-long (handled by black)
+
+[FORMAT]
+max-line-length=100
+indent-string='    '
+
+[BASIC]
+good-names=i,j,k,e,p,_,url
+
+[DESIGN]
+max-attributes=10
+max-args=7
+max-locals=20
+max-statements=50
+
+[SIMILARITIES]
+min-similarity-lines=4
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=yes
