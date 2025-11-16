@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # Amazon Scraper API
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: amazon-scraper-api
+    restart: unless-stopped
+    ports:
+      - "${API_PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - API_HOST=0.0.0.0
+      - API_PORT=3000
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+
+      # Database
+      - DB_PATH=/usr/src/app/data/amazon_scraper.db
+
+      # Redis (if queue is enabled)
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - ENABLE_QUEUE=${ENABLE_QUEUE:-false}
+
+      # Authentication
+      - JWT_SECRET=${JWT_SECRET:-change-this-secret-in-production}
+      - ENABLE_AUTH=${ENABLE_AUTH:-false}
+
+      # Rate limiting
+      - RATE_LIMIT_ENABLED=${RATE_LIMIT_ENABLED:-true}
+      - RATE_LIMIT_MAX=${RATE_LIMIT_MAX:-100}
+
+      # CORS
+      - CORS_ORIGIN=${CORS_ORIGIN:-*}
+
+      # API Features
+      - ENABLE_SWAGGER=${ENABLE_SWAGGER:-true}
+
+    volumes:
+      # Persist database
+      - ./data:/usr/src/app/data
+      # Optional: Mount logs
+      - ./logs:/usr/src/app/logs
+    networks:
+      - scraper-network
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+
+  # Redis (for job queue - optional)
+  redis:
+    image: redis:7-alpine
+    container_name: amazon-scraper-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - scraper-network
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+networks:
+  scraper-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local

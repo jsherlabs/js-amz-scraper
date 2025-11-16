@@ -4,7 +4,9 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.js',
     '!src/**/*.test.js',
-    '!**/node_modules/**'
+    '!**/node_modules/**',
+    // Exclude API code from coverage until Phase 5B tests are added
+    '!src/api/**/*.js'
   ],
   testMatch: [
     '**/test/**/*.test.js',

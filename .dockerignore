@@ -1,0 +1,52 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Testing
+coverage
+*.test.js
+test
+
+# Development files
+.env.local
+.env.development
+*.md
+!README.md
+
+# Git
+.git
+.gitignore
+.github
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Logs
+logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+dist
+build
+
+# Data files (will be mounted as volumes)
+*.db
+*.csv
+*.json
+*.xlsx
+data/
+logs/
+
+# Documentation
+docs/
+examples/
+
+# CI/CD
+.husky
