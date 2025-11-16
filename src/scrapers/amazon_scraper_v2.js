@@ -18,9 +18,8 @@ const { createConsoleLogger } = require('../utils/logger');
 const { retryPageOperation, retryNetworkOperation } = require('../utils/retry');
 const {
   NavigationError,
-  PageLoadError,
-  NoProductsFoundError,
-  BrowserError
+  NoProductsFoundError
+  // PageLoadError, BrowserError - Reserved for future use
 } = require('../utils/errors');
 const { validateProducts, isAmazonUrl, sanitizeProduct } = require('../utils/validator');
 
@@ -43,7 +42,7 @@ async function scrapeAmazon(url, outputFilename = null, options = {}) {
 
   try {
     // Launch browser with retry
-    logger.info(`Launching browser...`);
+    logger.info('Launching browser...');
     browser = await retryNetworkOperation(
       async () => {
         return await chromium.launch({
@@ -172,7 +171,7 @@ async function scrapeAmazon(url, outputFilename = null, options = {}) {
 /**
  * Extract products from page
  */
-async function extractProducts(page, config, logger) {
+async function extractProducts(page, config, _logger) {
   /* eslint-disable no-undef */
   const products = await page.evaluate(
     ({ selectors, scraping }) => {
