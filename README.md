@@ -19,6 +19,10 @@ Reusable Amazon web scrapers that extract product data from any Amazon URL. Work
 - ✅ **Well-Tested** - Comprehensive test suite with >70% coverage
 - ✅ **Code Quality** - ESLint, Prettier, Black, and Pylint configured
 - ✅ **CI/CD** - Automated testing on every push
+- ✅ **REST API** - Full-featured REST API with Express.js
+- ✅ **Web Dashboard** - Modern React dashboard for data visualization and management
+- ✅ **Price Tracking** - SQLite database for storing and tracking product prices over time
+- ✅ **Real-time Updates** - WebSocket support for live updates
 
 ## Project Structure
 
@@ -26,16 +30,26 @@ Reusable Amazon web scrapers that extract product data from any Amazon URL. Work
 js-amz-scraper/
 ├── src/
 │   ├── scrapers/          # Main scraper implementations
-│   ├── utils/             # Utility functions
+│   ├── api/               # REST API server (Express.js)
+│   ├── utils/             # Utility functions (database, logger, etc.)
+│   ├── cli/               # Command-line interface tools
 │   └── config/            # Configuration files
+├── frontend/              # React dashboard (Vite + Tailwind CSS)
+│   ├── src/
+│   │   ├── components/    # Reusable React components
+│   │   ├── pages/         # Page components
+│   │   └── services/      # API and WebSocket services
+│   └── public/            # Static assets
 ├── test/
 │   ├── unit/              # Unit tests
 │   ├── integration/       # Integration tests
+│   ├── api/               # API tests
 │   └── fixtures/          # Test fixtures
 ├── docs/                  # Documentation
 ├── scripts/               # Utility scripts
 ├── .github/workflows/     # CI/CD workflows
-└── coverage/              # Test coverage reports
+├── coverage/              # Test coverage reports
+└── data/                  # SQLite database storage
 ```
 
 ## Installation
@@ -88,6 +102,77 @@ python src/scrapers/amazon_scraper_generic.py "https://www.amazon.co.uk/s?k=supp
 # Custom output filename
 python src/scrapers/amazon_scraper_generic.py "https://www.amazon.co.uk/s?k=supplements" my_products.csv
 ```
+
+## Web Dashboard
+
+A modern, full-featured React dashboard for managing your Amazon scraping operations, tracking prices, and analyzing reviews.
+
+### Features
+
+- 📊 **Dashboard** - Real-time statistics, activity feed, quick actions
+- 📦 **Products** - Browse, search, add products, export to CSV
+- 💰 **Price Tracker** - Interactive charts, price history, trend analysis
+- ⭐ **Reviews** - Review analytics, sentiment analysis, filtering
+- 📈 **Analytics** - Market insights, distribution charts, top products
+- ⚙️ **Settings** - API configuration, preferences, data export
+
+### Quick Start
+
+```bash
+# Install frontend dependencies
+npm run install:frontend
+
+# Start backend API (required)
+npm run dev
+
+# In another terminal, start frontend dashboard
+npm run dev:frontend
+
+# Or run both together
+npm run dev:all
+```
+
+The dashboard will be available at `http://localhost:5173`
+
+### Production Build
+
+```bash
+# Build frontend for production
+npm run build:frontend
+
+# The built files will be in frontend/dist/
+# You can serve them with any static file server
+```
+
+See [frontend/README.md](frontend/README.md) for detailed documentation.
+
+## REST API
+
+The project includes a full-featured REST API for programmatic access to scraping functionality.
+
+### Starting the API Server
+
+```bash
+# Development mode
+npm run dev
+
+# Production mode
+npm start
+```
+
+API will be available at `http://localhost:3000`
+
+### Key Endpoints
+
+- `POST /api/scrape` - Scrape a product
+- `GET /api/products` - List all products
+- `GET /api/products/:asin` - Get product details
+- `POST /api/track` - Track product price
+- `GET /api/prices/:asin/history` - Get price history
+- `POST /api/scrape/reviews` - Scrape reviews
+- `GET /api/reviews/:asin` - Get reviews
+
+See [docs/API.md](docs/API.md) for complete API documentation.
 
 ## Development
 

@@ -6,6 +6,10 @@
   "scripts": {
     "start": "node src/api/server.js",
     "dev": "NODE_ENV=development node src/api/server.js",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:frontend\"",
+    "build:frontend": "cd frontend && npm run build",
+    "install:frontend": "cd frontend && npm install",
     "scrape": "node src/scrapers/amazon_scraper_generic.js",
     "scrape:v2": "node src/scrapers/amazon_scraper_v2.js",
     "scrape:v3": "node src/scrapers/amazon_scraper_v3.js",
